@@ -1,6 +1,6 @@
-package io.heynow.mapperoperator.service.impl;
+package io.heynow.mapoperator.service.impl;
 
-import io.heynow.mapperoperator.service.ScriptService;
+import io.heynow.mapoperator.service.ScriptService;
 import io.heynow.stream.manager.client.facade.StreamManagerClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

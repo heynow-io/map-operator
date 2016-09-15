@@ -1,8 +1,8 @@
-package io.heynow.mapperoperator.service.impl;
+package io.heynow.mapoperator.service.impl;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import io.heynow.mapperoperator.service.MapperService;
+import io.heynow.mapoperator.service.MapperService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -11,10 +11,8 @@ import java.util.Map;
 public class GroovyMapperService implements MapperService {
 
     public Object map(String script, Map<String, Object> input) {
-        Binding binding = new Binding();
-        binding.setVariable("input", input);
+        Binding binding = new Binding(input);
         GroovyShell shell = new GroovyShell(binding);
-        Object evaluate = shell.evaluate(script);
-        return evaluate;
+        return shell.evaluate(script);
     }
 }

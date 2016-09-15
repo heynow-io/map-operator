@@ -1,4 +1,4 @@
-package io.heynow.mapperoperator.service;
+package io.heynow.mapoperator.service;
 
 public interface ScriptService {
     String getScript(long operatorId);

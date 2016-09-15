@@ -1,4 +1,4 @@
-package io.heynow.mapperoperator.service;
+package io.heynow.mapoperator.service;
 
 
 import java.util.Map;

@@ -1,23 +1,14 @@
 package io.heynow.mapoperator.pojo;
 
+import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@EqualsAndHashCode
+@Data
+@AllArgsConstructor
 public class GroovyScriptData {
-
-    @Getter
-    @Setter
-    private volatile long lastUsageTime;
-
-    @Getter
+    private GroovyShell groovyShell;
     private Script script;
-
-    public GroovyScriptData(Script script) {
-        this.script = script;
-        lastUsageTime = System.currentTimeMillis();
-    }
 }
 

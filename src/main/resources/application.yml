@@ -1,3 +1,1 @@
 spring.cloud.stream.bindings.input.destination: map-operator
-
-groovy.script.timeout: 500

@@ -24,7 +24,9 @@ public class GroovyDefaultMapperService implements MapperService {
     @Override
     public Map<String, Object> map(long operatorId, Map<String, Object> input) {
         Script script = scriptService.getScript(operatorId);
-        script.setBinding(new Binding(input));
+        Map<String, Object> bindingInput = new HashMap<>();
+        bindingInput.put("input", input);
+        script.setBinding(new Binding(bindingInput));
         return getMapFromObject(script.run());
     }
 

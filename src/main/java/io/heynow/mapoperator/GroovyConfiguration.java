@@ -2,12 +2,15 @@ package io.heynow.mapoperator;
 
 import com.google.common.collect.ImmutableMap;
 import groovy.transform.TimedInterrupt;
+import org.codehaus.groovy.ast.tools.GeneralUtils;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
-import org.codehaus.groovy.control.customizers.CompilationCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -18,13 +21,14 @@ public class GroovyConfiguration {
     private Long timeoutValue;
 
     @Bean
-    CompilerConfiguration configuration(CompilationCustomizer... customizers) {
-        return new CompilerConfiguration().addCompilationCustomizers(customizers);
+    CompilerConfiguration configuration() {
+        return new CompilerConfiguration().addCompilationCustomizers(getTimeoutConfiguration());
     }
 
-    @Bean
-    ASTTransformationCustomizer timedInterrupt() {
-        return new ASTTransformationCustomizer(ImmutableMap.of("value", timeoutValue, "unit", MILLISECONDS), TimedInterrupt.class);
+    private ASTTransformationCustomizer getTimeoutConfiguration() {
+        Map<String, Object> params = ImmutableMap.<String, Object>builder().put("value", timeoutValue).put("unit",
+                GeneralUtils.propX(GeneralUtils.classX(TimeUnit.class), MILLISECONDS.toString())).build();
+        return new ASTTransformationCustomizer(params, TimedInterrupt.class);
     }
 
 

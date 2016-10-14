@@ -36,7 +36,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>io.heynow</groupId>
             <artifactId>stream-manager-model</artifactId>
@@ -50,8 +50,8 @@
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
-            <version>1.8.3</version>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.5</version>
         </dependency>
 
         <dependency>
@@ -71,6 +71,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.zuul</groupId>
+            <artifactId>zuul-core</artifactId>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 

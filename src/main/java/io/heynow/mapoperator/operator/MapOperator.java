@@ -9,6 +9,8 @@ import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.integration.annotation.Router;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class MapOperator {
@@ -23,7 +25,7 @@ public class MapOperator {
     }
 
     private void process(Note note) {
-        String script = scriptService.getScript(note.getProcessingModel().getCurrent().getId());
-        mapperService.map(script, note.getPayload());
+        Map<String, Object> result = mapperService.map(note.getProcessingModel().getCurrent().getId(), note.getPayload());
+        note.setPayload(result);
     }
 }

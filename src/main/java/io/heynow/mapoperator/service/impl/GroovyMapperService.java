@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class GroovyDefaultMapperService implements MapperService {
+public class GroovyMapperService implements MapperService {
 
     private final ScriptService<Script> scriptService;
 

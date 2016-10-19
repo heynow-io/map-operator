@@ -7,21 +7,18 @@ import io.heynow.mapoperator.service.impl.GroovyScriptService
 import io.heynow.stream.manager.client.facade.StreamManagerClient
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.IntegrationTest
-import org.springframework.boot.test.SpringApplicationContextLoader
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Stepwise
+import spock.lang.Specification
+import spock.lang.Unroll
 
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-@ContextConfiguration(loader = SpringApplicationContextLoader.class, classes = [Application.class])
-@IntegrationTest
-@Stepwise
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [Application.class, GroovyMapperServiceTest.Confing.class])
 @Configuration
-class GroovyMapperServiceTest {
+class GroovyMapperServiceTest extends Specification {
 
     static final String DEFAULT_RESULT_KEY = "result";
     static final String SCRIPT_KEY = "script";
@@ -52,17 +49,18 @@ class GroovyMapperServiceTest {
     private MapperService mapperService;
 
     @Autowired
-    private StreamManagerClient streamManagerClient;
+    private StreamManagerClient mock;
 
-    def "#appId should implement health check"(String script, Map input, Map expecteOutput) {
+    @Unroll
+    def "#script"(String script, Map input, Map expecteOutput) {
         given:
-            when(streamManagerClient.getProperties(-1)).thenReturn(script);
+            when(mock.getProperties(-1)).thenReturn(script);
             Map<String, Object> result = mapperService.map(-1, input);
         expect:
             result == expecteOutput
         where:
-            script | input             | expecteOutput
-            "5"    | ImmutableMap.of() | ImmutableMap.of(5)
+            script | input | expecteOutput
+            "5"    | [:]   | [result: 5]
     }
 
 //    @Test
@@ -116,17 +114,13 @@ class GroovyMapperServiceTest {
     @Configuration
     static class Confing {
         @Bean
-        GroovyScriptService groovyScriptService(CompilerConfiguration compilerConfiguration) {
-            StreamManagerClient mock = mock(StreamManagerClient.class);
-            when(mock.getProperties(PREDEFINED_RETURN_SCRIPT.getOperatorId())).thenReturn(PREDEFINED_RETURN_SCRIPT.getScript());
-            when(mock.getProperties(PREDEFINED_RETURN_WITH_INPUT_SCRIPT.getOperatorId())).thenReturn(PREDEFINED_RETURN_WITH_INPUT_SCRIPT.getScript());
-            when(mock.getProperties(PARAMETER_USAGE_SCRIPT.getOperatorId())).thenReturn(PARAMETER_USAGE_SCRIPT.getScript());
-            when(mock.getProperties(MULTI_PARAMETER_USAGE_SCRIPT.getOperatorId())).thenReturn(MULTI_PARAMETER_USAGE_SCRIPT.getScript());
-            when(mock.getProperties(LOOP_SCRIPT.getOperatorId())).thenReturn(LOOP_SCRIPT.getScript());
-            when(mock.getProperties(INFINITE_LOOP_SCRIPT.getOperatorId())).thenReturn(INFINITE_LOOP_SCRIPT.getScript());
-            when(mock.getProperties(PASS_INPUT_SCRIPT.getOperatorId())).thenReturn(PASS_INPUT_SCRIPT.getScript());
-            when(mock.getProperties(PASS_COMPLEX_INPUT_SCRIPT.getOperatorId())).thenReturn(PASS_COMPLEX_INPUT_SCRIPT.getScript());
-            return new GroovyScriptService(mock, compilerConfiguration);
+        StreamManagerClient streamManagerClient(CompilerConfiguration compilerConfiguration) {
+            return mock(StreamManagerClient.class);
+        }
+
+        @Bean
+        GroovyScriptService groovyScriptService(CompilerConfiguration compilerConfiguration, StreamManagerClient streamManagerClient) {
+            return new GroovyScriptService(streamManagerClient, compilerConfiguration);
         }
     }
 

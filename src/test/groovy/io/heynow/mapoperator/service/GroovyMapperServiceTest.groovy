@@ -7,7 +7,7 @@ import io.heynow.mapoperator.service.impl.GroovyScriptService
 import io.heynow.stream.manager.client.facade.StreamManagerClient
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import spock.lang.Specification
@@ -16,7 +16,7 @@ import spock.lang.Unroll
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [Application.class, GroovyMapperServiceTest.Confing.class])
+@SpringApplicationConfiguration(classes = [Application.class, GroovyMapperServiceTest.Confing.class])
 @Configuration
 class GroovyMapperServiceTest extends Specification {
 

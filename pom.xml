@@ -113,4 +113,14 @@
             <url>https://nexus-heynowio.rhcloud.com/content/repositories/snapshots</url>
         </repository>
     </repositories>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

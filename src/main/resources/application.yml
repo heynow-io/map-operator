@@ -1,2 +1,2 @@
-spring.application.name: stream-manager
+spring.application.name: map-operator
 logging.file:       application.log

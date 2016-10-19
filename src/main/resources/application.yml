@@ -1,1 +1,2 @@
-spring.cloud.stream.bindings.input.destination: map-operator
+spring.application.name: stream-manager
+logging.file:       application.log
